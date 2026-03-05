@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Doodle Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1208;
+    --paper: #ede4d0;
+    --cream: #e3d7bc;
+    --accent: #c4501a;
+    --soft: #8b7355;
+    --pale: #d4c9b0;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 27px,
+        rgba(139,115,85,0.08) 27px,
+        rgba(139,115,85,0.08) 28px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stamp {
+    display: inline-block;
+    border: 3px solid var(--accent);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    transform: rotate(-2deg);
+    margin-bottom: 2rem;
+    opacity: 0.85;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 4.5rem);
+    line-height: 1.05;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--pale);
+  }
+
+  .section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--pale);
+  }
+
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--pale);
+  }
+
+  .big-idea {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .big-idea em { font-style: italic; color: var(--soft); }
+
+  /* Flow strip */
+  .flow {
+    display: flex;
+    align-items: center;
+    margin: 1.25rem 0 1.75rem;
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    gap: 0;
+  }
+
+  .flow-step {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.3rem 0.6rem;
+    white-space: nowrap;
+  }
+
+  .flow-arrow {
+    font-size: 0.7rem;
+    color: var(--pale);
+    padding: 0 0.15rem;
+  }
+
+  /* Steps */
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 0; }
+
+  .steps li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--soft);
+    padding: 1rem 0;
+    border-bottom: 1px dashed var(--pale);
+  }
+
+  .steps li:last-child { border-bottom: none; }
+
+  .steps li strong {
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--pale);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  /* Platforms */
+  .platforms-group { margin-top: 1rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .platforms-group-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-bottom: 0.6rem;
+  }
+
+  .platforms { display: grid; gap: 0.75rem; }
+
+  .platform-card {
+    background: var(--cream);
+    border: 1px solid var(--pale);
+    padding: 1rem 1rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transition: border-color 0.2s;
+  }
+
+  .platform-card:hover { border-color: var(--soft); }
+
+  .platform-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .platform-type {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+
+  .platform-login {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+    width: fit-content;
+  }
+
+  .platform-login:hover { border-bottom-color: var(--accent); }
+  .platform-login::after { content: ' →'; }
+
+  /* Timeline */
+  .timeline { display: flex; flex-direction: column; margin-top: 1rem; }
+
+  .timeline-item { display: grid; grid-template-columns: 5rem 1fr; gap: 1rem; align-items: start; }
+
+  .timeline-item:not(:last-child) .tl-content {
+    border-bottom: 1px dashed var(--pale);
+    padding-bottom: 0.85rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .tl-time {
+    font-size: 0.65rem;
+    color: var(--soft);
+    letter-spacing: 0.1em;
+    text-align: right;
+    padding-right: 1rem;
+    border-right: 2px solid var(--pale);
+    padding-top: 0.2rem;
+  }
+
+  .tl-content { font-size: 0.82rem; line-height: 1.6; color: var(--soft); }
+
+  .tl-content strong {
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+
+  /* Mantra */
+  .mantra {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2rem;
+    margin-top: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mantra::before {
+    content: '"';
+    position: absolute;
+    top: -1rem;
+    left: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    color: rgba(255,255,255,0.05);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .mantra p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .mantra .attr {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 0.75rem;
+    display: block;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    font-size: 0.65rem;
+    color: var(--pale);
+	text-shadow: 0px 1px 1.5px rgba(0,0,0,0.6);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 2rem 1.25rem; }
+    .flow-step { font-size: 0.52rem; padding: 0.3rem 0.45rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="stamp">A plan for us 😊</div>
+
+  <h1>Daily<br><em>Doodle</em><br>Challenge</h1>
+  <p class="subtitle">Build your presence · One minute at a time</p>
+
+  <!-- THE IDEA -->
+  <div class="section">
+    <div class="section-label">The Idea</div>
+    <p class="big-idea">Every morning, receive something to draw. Spend <em>one minute</em> drawing it. Record it, post it, get on with your day.</p>
+    <p class="big-idea" style="margin-top:0.75rem">The goal isn't perfection — it's <em>showing up every single day.</em></p>
+  </div>
+
+  <!-- DAILY ROUTINE -->
+  <div class="section">
+    <div class="section-label">Our Daily Routine</div>
+
+    <div class="flow">
+      <span class="flow-step">Sit down</span>
+      <span class="flow-arrow">›</span>
+      <span class="flow-step">Record</span>
+      <span class="flow-arrow">›</span>
+      <span class="flow-step">Draw</span>
+      <span class="flow-arrow">›</span>
+      <span class="flow-step">Post video</span>
+      <span class="flow-arrow">›</span>
+      <span class="flow-step">Post image</span>
+    </div>
+
+    <ul class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <div>
+          <strong>The motive</strong>
+          Receive the item to draw — randomly generated and waiting for you before you wake up.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <div>
+          <strong>Record</strong>
+          Set up your phone — prop it on a book, a mug, anything. No fancy setup needed.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <div>
+          <strong>Draw 😊</strong>
+          One minute. Quick, raw, real. No perfection — simply enjoy the doodling.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <div>
+          <strong>Post video</strong>
+          Upload to YouTube Shorts &amp; TikTok.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">5</span>
+        <div>
+          <strong>Post image</strong>
+          Photo the drawing and post to Cara, Pinterest &amp; Twitter.
+        </div>
+      </li>
+    </ul>
+
+    <p style="margin-top:1.25rem; font-size:0.75rem; color:var(--accent); letter-spacing:0.05em;">⏱ Total time once accounts are set up: under 5 minutes.</p>
+  </div>
+
+  <!-- PLATFORMS -->
+  <div class="section">
+    <div class="section-label">Where We Post</div>
+
+    <div class="platforms-group">
+
+      <div>
+        <div class="platforms-group-label">Video · Every day</div>
+        <div class="platforms" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="platform-card">
+            <div class="platform-name">YouTube</div>
+            <div class="platform-type">Shorts · 1 min video</div>
+            <a class="platform-login" href="https://accounts.google.com/signin" target="_blank" rel="noopener">Log in</a>
+          </div>
+          <div class="platform-card">
+            <div class="platform-name">TikTok</div>
+            <div class="platform-type">1 min video</div>
+            <a class="platform-login" href="https://www.tiktok.com/login" target="_blank" rel="noopener">Log in</a>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="platforms-group-label">Image · Every Sunday (7 at once)</div>
+        <div class="platforms" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="platform-card">
+            <div class="platform-name">Cara</div>
+            <div class="platform-type">Artist-first image platform</div>
+            <a class="platform-login" href="https://cara.app/login" target="_blank" rel="noopener">Log in</a>
+          </div>
+          <div class="platform-card">
+            <div class="platform-name">Pinterest</div>
+            <div class="platform-type">Image discovery</div>
+            <a class="platform-login" href="https://www.pinterest.com/login" target="_blank" rel="noopener">Log in</a>
+          </div>
+          <div class="platform-card">
+            <div class="platform-name">Twitter</div>
+            <div class="platform-type">Social · image post</div>
+            <a class="platform-login" href="https://x.com/i/flow/login" target="_blank" rel="noopener">Log in</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEEKLY RHYTHM -->
+  <div class="section">
+    <div class="section-label">Weekly Rhythm</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-time">Mon – Sat</div>
+        <div class="tl-content">
+          <strong>Morning draw + post</strong>
+          Daily video to YouTube &amp; TikTok. Photograph and save the drawing.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">Sunday</div>
+        <div class="tl-content">
+          <strong>Weekly image drop</strong>
+          Post all 7 drawings to Cara, Pinterest &amp; Twitter in one go.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time" style="color:var(--accent);">Bonus</div>
+        <div class="tl-content">
+          <strong style="color:var(--accent);">Monthly roundup</strong>
+          At the end of each month, post everything — all drawings from the month — across all platforms in one big drop.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mantra">
+    <p>Not quality. Our dedication.</p>
+    <span class="attr">— The only rule that matters</span>
+  </div>
+
+  <p class="footer">A bigger net catches more commissions · Cast it daily</p>
+
+</div>
+</body>
+</html>
