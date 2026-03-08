@@ -15,6 +15,7 @@
     --accent: #c4501a;
     --soft: #8b7355;
     --pale: #d4bc96;
+	--blue: #3d6b8a;
   }
 
   body {
@@ -31,14 +32,13 @@
     content: '';
     position: fixed;
     inset: 0;
-    background: 
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 27px,
-        rgba(139,115,85,0.08) 27px,
-        rgba(139,115,85,0.08) 28px
-      );
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 27px,
+      rgba(139,115,85,0.08) 27px,
+      rgba(139,115,85,0.08) 28px
+    );
     pointer-events: none;
     z-index: 0;
   }
@@ -74,10 +74,7 @@
     letter-spacing: -0.02em;
   }
 
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
+  h1 em { font-style: italic; color: var(--accent); }
 
   .subtitle {
     font-size: 0.72rem;
@@ -153,7 +150,7 @@
   }
 
   /* Steps */
-  .steps { list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .steps { list-style: none; display: flex; flex-direction: column; }
 
   .steps li {
     display: grid;
@@ -203,7 +200,7 @@
     padding: 1rem 1rem 0.85rem;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.3rem;
     transition: border-color 0.2s;
   }
 
@@ -222,22 +219,58 @@
     text-transform: uppercase;
     color: var(--soft);
   }
-
-  .platform-login {
-    display: inline-block;
-    margin-top: 0.4rem;
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
+    .platform-text {
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.15s;
-    width: fit-content;
+    color: var(--soft);
+	margin-top: 0.8em;
   }
 
-  .platform-login:hover { border-bottom-color: var(--accent); }
-  .platform-login::after { content: ' →'; }
+  /* Inline login + post buttons */
+  .platform-links {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.4rem;
+  }
+
+  .platform-login,
+  .platform-post {
+    display: inline-block;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.28rem 0.65rem;
+    border: 1px solid var(--pale);
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .platform-login {
+    color: var(--soft);
+    background: transparent;
+    border-right: none;
+  }
+
+  .platform-post {
+    color: var(--accent);
+    background: transparent;
+  }
+
+  .platform-login:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+    z-index: 1;
+    position: relative;
+  }
+
+  .platform-post:hover {
+    background: var(--blue);
+    color: var(--paper);
+    border-color: var(--blue);
+  }
 
   /* Timeline */
   .timeline { display: flex; flex-direction: column; margin-top: 1rem; }
@@ -313,7 +346,7 @@
     margin-top: 3rem;
     font-size: 0.65rem;
     color: var(--pale);
-	text-shadow: 0px 1px 1px rgba(0,0,0,0.4);
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.25);
     letter-spacing: 0.15em;
     text-transform: uppercase;
     text-align: center;
@@ -322,6 +355,7 @@
   @media (max-width: 500px) {
     body { padding: 2rem 1.25rem; }
     .flow-step { font-size: 0.52rem; padding: 0.3rem 0.45rem; }
+    .platforms { grid-template-columns: 1fr 1fr !important; }
   }
 </style>
 </head>
@@ -406,37 +440,62 @@
       <div>
         <div class="platforms-group-label">Video · Every day</div>
         <div class="platforms" style="grid-template-columns: repeat(2, 1fr);">
+
           <div class="platform-card">
             <div class="platform-name">YouTube</div>
             <div class="platform-type">Shorts · 1 min video</div>
-            <a class="platform-login" href="https://accounts.google.com/signin" target="_blank" rel="noopener">Log in</a>
+            <div class="platform-links">
+              <a class="platform-login" href="https://accounts.google.com/signin" target="_blank" rel="noopener">Log in</a>
+              <a class="platform-post" href="https://www.youtube.com/upload" target="_blank" rel="noopener">Upload</a>
+            </div>
           </div>
+
           <div class="platform-card">
             <div class="platform-name">TikTok</div>
             <div class="platform-type">1 min video</div>
-            <a class="platform-login" href="https://www.tiktok.com/login" target="_blank" rel="noopener">Log in</a>
+            <div class="platform-links">
+              <a class="platform-login" href="https://www.tiktok.com/login" target="_blank" rel="noopener">Log in</a>
+              <a class="platform-post" href="https://www.tiktok.com/upload" target="_blank" rel="noopener">Upload</a>
+            </div>
           </div>
+
         </div>
       </div>
 
       <div>
-        <div class="platforms-group-label">Image · Every day + Sunday(7 at once! :D)</div>
+        <div class="platforms-group-label">Image · Every Sunday (7 at once)</div>
         <div class="platforms" style="grid-template-columns: repeat(3, 1fr);">
+
           <div class="platform-card">
             <div class="platform-name">Cara</div>
-            <div class="platform-type">Artist-first image platform</div>
-            <a class="platform-login" href="https://cara.app/login" target="_blank" rel="noopener">Log in</a>
+            <div class="platform-type">Artist-first platform</div>
+            <div class="platform-links">
+              <a class="platform-login" href="https://cara.app/login" target="_blank" rel="noopener">Log in</a>
+              <a class="platform-post" href="https://cara.app/bookmarks" target="_blank" rel="noopener">Post</a>
+            </div>
+            <div class="platform-text">The post button is top right</div>
           </div>
+
           <div class="platform-card">
             <div class="platform-name">Pinterest</div>
             <div class="platform-type">Image discovery</div>
-            <a class="platform-login" href="https://www.pinterest.com/login" target="_blank" rel="noopener">Log in</a>
+            <div class="platform-links">
+              <a class="platform-login" href="https://www.pinterest.com/login" target="_blank" rel="noopener">Log in</a>
+              <a class="platform-post" href="https://www.pinterest.com/pin-creation-tool/" target="_blank" rel="noopener">Post</a>
+            </div>
+            <div class="platform-text">You have to create a board; name it doodling</div>
           </div>
+
           <div class="platform-card">
             <div class="platform-name">Twitter</div>
             <div class="platform-type">Social · image post</div>
-            <a class="platform-login" href="https://x.com/i/flow/login" target="_blank" rel="noopener">Log in</a>
+            <div class="platform-links">
+              <a class="platform-login" href="https://x.com/i/flow/login" target="_blank" rel="noopener">Log in</a>
+              <a class="platform-post" href="https://x.com/compose/post" target="_blank" rel="noopener">Post</a>
+            </div>
+            <div class="platform-text">Post it and close it. Yayy 😊</div>
           </div>
+
         </div>
       </div>
 
