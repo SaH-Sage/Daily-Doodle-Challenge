@@ -15,7 +15,7 @@
     --accent: #c4501a;
     --soft: #8b7355;
     --pale: #d4bc96;
-	--blue: #3d6b8a;
+    --blue: #3d6b8a;
   }
 
   body {
@@ -219,12 +219,13 @@
     text-transform: uppercase;
     color: var(--soft);
   }
-    .platform-text {
+
+  .platform-text {
     font-size: 0.5rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--soft);
-	margin-top: 0.8em;
+    margin-top: 0.8em;
   }
 
   /* Inline login + post buttons */
@@ -352,7 +353,7 @@
     text-align: center;
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 600px) {
     body { padding: 2rem 1.25rem; }
     .flow-step { font-size: 0.52rem; padding: 0.3rem 0.45rem; }
     .platforms { grid-template-columns: 1fr 1fr !important; }
@@ -423,7 +424,7 @@
         <span class="step-num">5</span>
         <div>
           <strong>Post image</strong>
-          Photo the drawing and post to Cara, Pinterest &amp; Twitter.
+          Photo the drawing and post to Cara, Pinterest, Twitter &amp; Bluesky.
         </div>
       </li>
     </ul>
@@ -464,7 +465,7 @@
 
       <div>
         <div class="platforms-group-label">Image · Every Sunday (7 at once)</div>
-        <div class="platforms" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="platforms" style="grid-template-columns: repeat(4, 1fr);">
 
           <div class="platform-card">
             <div class="platform-name">Cara</div>
@@ -496,6 +497,16 @@
             <div class="platform-text">Post it and close it. Yayy 😊</div>
           </div>
 
+          <div class="platform-card">
+            <div class="platform-name">Bluesky</div>
+            <div class="platform-type">Social · image post</div>
+            <div class="platform-links">
+              <a class="platform-login" href="https://bsky.app/sys/log" target="_blank" rel="noopener">Log in</a>
+              <a class="platform-post" href="https://bsky.app/messages" target="_blank" rel="noopener">Post</a>
+            </div>
+            <div class="platform-text">The post button is on the left side, at the bottom 🎨</div>
+          </div>
+
         </div>
       </div>
 
@@ -517,7 +528,7 @@
         <div class="tl-time">Sunday</div>
         <div class="tl-content">
           <strong>Weekly image drop</strong>
-          Post all 7 drawings to Cara, Pinterest &amp; Twitter in one go.
+          Post all 7 drawings to Cara, Pinterest, Twitter &amp; Bluesky in one go.
         </div>
       </div>
       <div class="timeline-item">
